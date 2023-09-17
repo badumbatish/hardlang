@@ -2,8 +2,8 @@ use std::fs;
 
 pub struct Reader {
     file_content : String,
-    row_counter : usize,
-    column_counter : usize,
+     row_counter  : usize,
+     column_counter : usize,
 }
 
 impl Reader {
@@ -40,6 +40,19 @@ impl Reader {
         Ok(&(self.file_content[true_index..true_index+1]))
     }
 
+    pub fn consume(&mut self) -> Result<&str, String> {
+        let peek_result = self.peek().expect("Failed in consume");
+
+        if peek_result == "\n" {
+            self.row_counter = 0;
+            self.column_counter += 1;
+        } else {
+            self.row_counter += 1;
+        }
+
+        Ok(peek_result)
+
+    }
 }
 
 
