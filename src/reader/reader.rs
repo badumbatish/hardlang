@@ -1,9 +1,16 @@
 use std::env;
 use std::fs;
 
-pub struct Reader {}
+pub struct Reader {
+    file_content : String
+}
 
 impl Reader {
+    pub  fn new(file_path : &str) -> Self {
+        Self {
+            file_content : Self::read_file(file_path)
+        }
+    }
     pub fn read_file(file_path : &str) -> String {
         println!("In file {}", file_path);
 
@@ -13,6 +20,11 @@ impl Reader {
 
         contents
     }
+
+    pub fn get_file_content<'a>(&self) -> &str {
+        &(self.file_content)
+    }
+
 }
 
 
@@ -33,5 +45,16 @@ mod test_reader {
         result = String::from("I'm nobody! Who are you?\n");
         let test_2_msg: &str = "Reading two line from file, expected a newline char";
         assert_eq!(Reader::read_file(&file_path), result, "{}", test_2_msg);
+    }
+
+    #[test]
+    fn test_get_content() {
+        let mut file_path = format!("{}/test_read_file.txt", TEST_MATERIAL_DIRECTORY);
+        let mut result: String = String::from("I'm nobody! Who are you?");
+
+
+        let  rdr:Reader = Reader::new(&file_path);
+
+        assert_eq!(rdr.get_file_content(), result);
     }
 }
