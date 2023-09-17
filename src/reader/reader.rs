@@ -36,7 +36,8 @@ impl Reader {
     }
 
     pub fn peek(&self) -> Result<&str, String> {
-        Ok(&(self.file_content[self.row_counter..self.row_counter+1]))
+        let true_index = self.row_counter;
+        Ok(&(self.file_content[true_index..true_index+1]))
     }
 
 }
