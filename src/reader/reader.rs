@@ -2,8 +2,8 @@ use std::fs;
 
 pub struct Reader {
     file_content : String,
-    row_counter : u32,
-    column_counter : u32,
+    row_counter : usize,
+    column_counter : usize,
 }
 
 impl Reader {
@@ -28,16 +28,15 @@ impl Reader {
         &(self.file_content)
     }
 
-    pub fn get_row_counter(&self) -> u32 {
+    pub fn get_row_counter(&self) -> usize {
         self.row_counter
     }
-    pub fn get_column_counter(&self) -> u32 {
+    pub fn get_column_counter(&self) -> usize {
         self.column_counter
     }
 
     pub fn peek(&self) -> Result<&str, String> {
-
-        Err("not implemented".to_string())
+        Ok(&(self.file_content[self.row_counter..self.row_counter+1]))
     }
 
 }
@@ -76,7 +75,7 @@ mod test_reader {
     }
 
     #[test]
-    fn test_peek() {
+    fn test_peek_and_consume() {
         let mut file_path = format!("{}/peeking_and_consuming/basic_peek.txt", TEST_MATERIAL_DIRECTORY);
         let mut result: String = String::from("I'm nobody! Who are you?");
 
