@@ -1,14 +1,19 @@
+use std::arch::aarch64::uint8x8_t;
 use std::env;
 use std::fs;
 
 pub struct Reader {
-    file_content : String
+    file_content : String,
+    row_counter : u32,
+    column_counter : u32,
 }
 
 impl Reader {
     pub  fn new(file_path : &str) -> Self {
         Self {
-            file_content : Self::read_file(file_path)
+            file_content : Self::read_file(file_path),
+            row_counter : 0,
+            column_counter : 0,
         }
     }
     pub fn read_file(file_path : &str) -> String {
@@ -24,6 +29,16 @@ impl Reader {
     pub fn get_file_content<'a>(&self) -> &str {
         &(self.file_content)
     }
+
+    pub fn get_row_counter(&self) -> u32 {
+        self.row_counter
+    }
+    pub fn get_column_counter(&self) -> u32 {
+        self.column_counter
+    }
+    // pub fn peek(&self) -> &str {
+    //
+    // }
 
 }
 
@@ -48,7 +63,7 @@ mod test_reader {
     }
 
     #[test]
-    fn test_get_content() {
+    fn test_constructor() {
         let mut file_path = format!("{}/test_read_file.txt", TEST_MATERIAL_DIRECTORY);
         let mut result: String = String::from("I'm nobody! Who are you?");
 
@@ -56,5 +71,7 @@ mod test_reader {
         let  rdr:Reader = Reader::new(&file_path);
 
         assert_eq!(rdr.get_file_content(), result);
+        assert_eq!(rdr.get_row_counter(), 0);
+        assert_eq!(rdr.get_column_counter(), 0);
     }
 }
