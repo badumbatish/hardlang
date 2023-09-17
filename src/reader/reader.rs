@@ -1,5 +1,3 @@
-use std::arch::aarch64::uint8x8_t;
-use std::env;
 use std::fs;
 
 pub struct Reader {
@@ -36,9 +34,11 @@ impl Reader {
     pub fn get_column_counter(&self) -> u32 {
         self.column_counter
     }
-    // pub fn peek(&self) -> &str {
-    //
-    // }
+
+    pub fn peek(&self) -> Result<&str, String> {
+
+        Err("not implemented".to_string())
+    }
 
 }
 
@@ -47,16 +47,16 @@ impl Reader {
 mod test_reader {
     use crate::reader::reader::Reader;
 
-    const TEST_MATERIAL_DIRECTORY: &str = "src/reader/test_material/read_file";
+    const TEST_MATERIAL_DIRECTORY: &str = "src/reader/test_material";
     #[test]
     fn test_read_file() {
-        let mut file_path = format!("{}/test_read_file.txt", TEST_MATERIAL_DIRECTORY);
+        let mut file_path = format!("{}/read_file/test_read_file.txt", TEST_MATERIAL_DIRECTORY);
         let mut result: String = String::from("I'm nobody! Who are you?");
 
         let test_1_msg: &str = "Reading single line from file";
         assert_eq!(Reader::read_file(&file_path), result, "{}", test_1_msg);
 
-        file_path = format!("{}/test_newline_twoline.txt", TEST_MATERIAL_DIRECTORY);
+        file_path = format!("{}/read_file/test_newline_twoline.txt", TEST_MATERIAL_DIRECTORY);
         result = String::from("I'm nobody! Who are you?\n");
         let test_2_msg: &str = "Reading two line from file, expected a newline char";
         assert_eq!(Reader::read_file(&file_path), result, "{}", test_2_msg);
@@ -64,7 +64,7 @@ mod test_reader {
 
     #[test]
     fn test_constructor() {
-        let mut file_path = format!("{}/test_read_file.txt", TEST_MATERIAL_DIRECTORY);
+        let mut file_path = format!("{}/read_file/test_read_file.txt", TEST_MATERIAL_DIRECTORY);
         let mut result: String = String::from("I'm nobody! Who are you?");
 
 
@@ -74,4 +74,15 @@ mod test_reader {
         assert_eq!(rdr.get_row_counter(), 0);
         assert_eq!(rdr.get_column_counter(), 0);
     }
+
+    #[test]
+    fn test_peek() {
+        let mut file_path = format!("{}/peeking_and_consuming/basic_peek.txt", TEST_MATERIAL_DIRECTORY);
+        let mut result: String = String::from("I'm nobody! Who are you?");
+
+
+        let  rdr:Reader = Reader::new(&file_path);
+        assert_eq!(rdr.peek().unwrap(), "1");
+    }
+
 }
