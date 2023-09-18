@@ -69,6 +69,10 @@ impl Reader {
 
         Ok(peek_result)
     }
+
+    pub fn is_eof(&self) -> bool {
+        self.true_index >= self.file_content.len()
+    }
 }
 
 
