@@ -88,8 +88,8 @@ mod test_reader {
 
     #[test]
     fn test_constructor() {
-        let mut file_path = format!("{}/read_file/test_read_file.txt", TEST_MATERIAL_DIRECTORY);
-        let mut result: String = String::from("I'm nobody! Who are you?");
+        let file_path = format!("{}/read_file/test_read_file.txt", TEST_MATERIAL_DIRECTORY);
+        let result: String = String::from("I'm nobody! Who are you?");
 
 
         let  rdr:Reader = Reader::new(&file_path);
@@ -102,7 +102,7 @@ mod test_reader {
     #[test]
     fn test_peek_and_consume() {
         let mut file_path = format!("{}/peeking_and_consuming/basic_peek.txt", TEST_MATERIAL_DIRECTORY);
-        let mut result: String = String::from("I'm nobody! Who are you?");
+        let result: String = String::from("I'm nobody! Who are you?");
 
 
         let mut rdr : Reader = Reader::new(&file_path);
@@ -113,9 +113,18 @@ mod test_reader {
         rdr.change_file(&file_path);
         assert_eq!(rdr.get_file_content().len(), 8);
 
-        rdr.consume().expect("Consumed 1 character");
+        rdr.consume().expect("Consumed character a");
         assert_eq!(rdr.column_counter, 1);
 
+        rdr.consume().expect("Consumed 1 character b");
+        assert_eq!(rdr.column_counter, 2);
+
+        rdr.consume().expect("Consumed 1 character c");
+        assert_eq!(rdr.column_counter, 3);
+
+        rdr.consume().expect("Consumed 1 character /\n");
+        assert_eq!(rdr.column_counter, 0);
+        assert_eq!(rdr.row_counter, 1)
     }
 
 }
