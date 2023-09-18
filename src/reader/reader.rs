@@ -2,6 +2,7 @@ use std::fs;
 
 pub struct Reader {
     file_content : String,
+    true_index : usize,
     row_counter  : usize,
     column_counter : usize,
 }
@@ -12,10 +13,12 @@ impl Reader {
             file_content : Self::read_file(file_path),
             row_counter : 0,
             column_counter : 0,
+            true_index : 0,
         }
     }
 
     pub fn change_file(&mut self, file_path :&str) {
+        self.true_index = 0;
         self.row_counter = 0;
         self.column_counter = 0;
         self.file_content = Reader::read_file(file_path)
@@ -50,7 +53,7 @@ impl Reader {
     }
 
     fn get_true_index(&self) -> usize {
-        self.get_row_counter()
+        self.true_index
     }
 
     pub fn consume(&mut self) -> Result<char, &str> {
@@ -58,8 +61,10 @@ impl Reader {
         if peek_result == '\n' {
             self.row_counter += 1;
             self.column_counter = 0;
+            self.true_index += 1;
         } else {
             self.column_counter += 1;
+            self.true_index += 1;
         }
 
         Ok(peek_result)
@@ -113,18 +118,23 @@ mod test_reader {
         rdr.change_file(&file_path);
         assert_eq!(rdr.get_file_content().len(), 8);
 
-        rdr.consume().expect("Consumed character a");
+        rdr.consume().expect("Consumed character '1'");
         assert_eq!(rdr.column_counter, 1);
 
-        rdr.consume().expect("Consumed 1 character b");
+        rdr.consume().expect("Consumed 1 character '2'");
         assert_eq!(rdr.column_counter, 2);
 
-        rdr.consume().expect("Consumed 1 character c");
+        rdr.consume().expect("Consumed 1 character '3'");
         assert_eq!(rdr.column_counter, 3);
 
         rdr.consume().expect("Consumed 1 character /\n");
         assert_eq!(rdr.column_counter, 0);
-        assert_eq!(rdr.row_counter, 1)
+        assert_eq!(rdr.row_counter, 1);
+        assert_eq!(rdr.true_index, 4);
+
+        rdr.consume().expect("Consumed 1 character 'a'");
+        assert_eq!(rdr.true_index, 5);
+        assert_eq!(rdr.peek().expect("Peek 'b'"), 'b');
     }
 
 }
