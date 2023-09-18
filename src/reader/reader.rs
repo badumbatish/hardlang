@@ -29,18 +29,23 @@ impl Reader {
     }
 
     pub fn get_row_counter(&self) -> usize {
-        self.row_counter
+        self.row_counter * 1
     }
     pub fn get_column_counter(&self) -> usize {
-        self.column_counter
+        self.column_counter * 1
     }
 
-    pub fn peek(&self) -> Result<&str, String> {
-        let true_index = self.row_counter;
+    pub fn peek(&self) -> Result<&str, &str> {
+        // TODO : Fix this way of calculating the true index into the string in get_true_index
+        let true_index = self.get_true_index();
         Ok(&(self.file_content[true_index..true_index+1]))
     }
 
-    pub fn consume(&mut self) -> Result<&str, String> {
+    fn get_true_index(&self) -> usize {
+        self.row_counter * 1
+    }
+
+    pub fn consume(&mut self) -> Result<&str, &str> {
         let peek_result = self.peek().expect("Failed in consume");
 
         if peek_result == "\n" {
@@ -96,6 +101,10 @@ mod test_reader {
 
         let  rdr:Reader = Reader::new(&file_path);
         assert_eq!(rdr.peek().unwrap(), "1");
+
+
+        file_path = format!("{}/peeking_and_consuming/peek_line2.txt", TEST_MATERIAL_DIRECTORY);
+        assert_eq!(rdr.get_file_content().len(), 8);
     }
 
 }
