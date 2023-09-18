@@ -2,8 +2,8 @@ use std::fs;
 
 pub struct Reader {
     file_content : String,
-     row_counter  : usize,
-     column_counter : usize,
+    row_counter  : usize,
+    column_counter : usize,
 }
 
 impl Reader {
@@ -14,6 +14,13 @@ impl Reader {
             column_counter : 0,
         }
     }
+
+    pub fn change_file(&mut self, file_path :&str) {
+        self.row_counter = 0;
+        self.column_counter = 0;
+        self.file_content = Reader::read_file(file_path)
+    }
+
     pub fn read_file(file_path : &str) -> String {
         println!("In file {}", file_path);
 
@@ -23,6 +30,7 @@ impl Reader {
 
         contents
     }
+
 
     pub fn get_file_content<'a>(&self) -> &str {
         &(self.file_content)
@@ -35,28 +43,26 @@ impl Reader {
         self.column_counter * 1
     }
 
-    pub fn peek(&self) -> Result<&str, &str> {
+    pub fn peek(&self) -> Result<char, &str> {
         // TODO : Fix this way of calculating the true index into the string in get_true_index
         let true_index = self.get_true_index();
-        Ok(&(self.file_content[true_index..true_index+1]))
+        Ok(char::from(self.file_content.as_bytes()[true_index]))
     }
 
     fn get_true_index(&self) -> usize {
-        self.row_counter * 1
+        self.get_row_counter()
     }
 
-    pub fn consume(&mut self) -> Result<&str, &str> {
+    pub fn consume(&mut self) -> Result<char, &str> {
         let peek_result = self.peek().expect("Failed in consume");
-
-        if peek_result == "\n" {
-            self.row_counter = 0;
-            self.column_counter += 1;
-        } else {
+        if peek_result == '\n' {
             self.row_counter += 1;
+            self.column_counter = 0;
+        } else {
+            self.column_counter += 1;
         }
 
         Ok(peek_result)
-
     }
 }
 
@@ -99,12 +105,17 @@ mod test_reader {
         let mut result: String = String::from("I'm nobody! Who are you?");
 
 
-        let  rdr:Reader = Reader::new(&file_path);
-        assert_eq!(rdr.peek().unwrap(), "1");
+        let mut rdr : Reader = Reader::new(&file_path);
+        assert_eq!(rdr.peek().unwrap(), '1');
 
 
         file_path = format!("{}/peeking_and_consuming/peek_line2.txt", TEST_MATERIAL_DIRECTORY);
+        rdr.change_file(&file_path);
         assert_eq!(rdr.get_file_content().len(), 8);
+
+        rdr.consume().expect("Consumed 1 character");
+        assert_eq!(rdr.column_counter, 1);
+
     }
 
 }
