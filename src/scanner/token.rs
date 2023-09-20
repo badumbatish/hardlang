@@ -37,4 +37,5 @@ pub enum TOKEN {
     // BlockComment(Vec<char>),
 
     EOF, //
+    INVALID, //
 }
