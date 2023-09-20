@@ -2,6 +2,7 @@ use std::fs;
 
 pub trait ReaderGeneral {
     fn new(file_path: &str) -> Self;
+    fn new_str(str : &str) -> Self;
     fn change_file(&mut self, file_path: &str);
     fn get_row_counter(&self) -> usize;
     fn get_column_counter(&self) -> usize;
@@ -42,6 +43,16 @@ impl ReaderGeneral for Reader {
             row_counter: 0,
             column_counter: 0,
             true_index: 0,
+        }
+    }
+
+
+    fn new_str(str : &str) -> Self {
+        Self {
+            file_content: str.to_string(),
+            true_index: 0,
+            row_counter: 0,
+            column_counter: 0,
         }
     }
     fn change_file(&mut self, file_path: &str) {
