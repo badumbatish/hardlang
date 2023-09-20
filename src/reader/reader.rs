@@ -111,7 +111,7 @@ mod test_reader {
     #[test]
     fn test_peek_and_consume() {
         let mut file_path = format!("{}/peeking_and_consuming/basic_peek.txt", TEST_MATERIAL_DIRECTORY);
-        let result: String = String::from("I'm nobody! Who are you?");
+        let _result: String = String::from("I'm nobody! Who are you?");
 
 
         let mut rdr : Reader = Reader::new(&file_path);
