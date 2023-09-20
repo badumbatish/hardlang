@@ -15,14 +15,28 @@ impl Lexer {
             reader : Reader::new(file_path)
         }
     }
-    pub fn next_token(&self) -> TOKEN {
+    pub fn next_token(&mut self) -> TOKEN {
 
         while !self.reader.is_eof() {
-            let peeked = self.reader.peek().unwrap();
-            let token = match peeked {
+            let first_char = self.reader.consume().unwrap();
+            let token = match first_char {
+                // Starts with '+'
+                 '+' => {
+                     if !self.reader.is_eof() {
+                         let second_char = self.reader.consume().unwrap();
+                         match second_char {
+                             ' ' => TOKEN::ADD,
+                             '=' => TOKEN::AddAssign,
+                             '+' => TOKEN::AddIncr,
+                             _ => TOKEN::INVALID,
+                         }
+                     } else {
+                         TOKEN::ADD
+                     }
+                 }
                  _ => TOKEN::INVALID
             };
-g
+
         }
         return TOKEN::ADD
     }  // Match the read character and assign appropriate type
