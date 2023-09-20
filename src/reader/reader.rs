@@ -1,5 +1,16 @@
 use std::fs;
 
+pub trait ReaderGeneral {
+    fn new(file_path: &str) -> Self;
+    fn change_file(&mut self, file_path: &str);
+    fn get_row_counter(&self) -> usize;
+    fn get_column_counter(&self) -> usize;
+    fn peek(&self) -> Result<char, &str>;
+    fn get_true_index(&self) -> usize;
+    fn consume(&mut self) -> Result<char, &str>;
+    fn is_eof(&self) -> bool;
+}
+
 pub struct Reader {
     file_content : String,
     true_index : usize,
@@ -8,22 +19,6 @@ pub struct Reader {
 }
 
 impl Reader {
-    pub  fn new(file_path : &str) -> Self {
-        Self {
-            file_content : Self::read_file(file_path),
-            row_counter : 0,
-            column_counter : 0,
-            true_index : 0,
-        }
-    }
-
-    pub fn change_file(&mut self, file_path :&str) {
-        self.true_index = 0;
-        self.row_counter = 0;
-        self.column_counter = 0;
-        self.file_content = Reader::read_file(file_path)
-    }
-
     pub fn read_file(file_path : &str) -> String {
         println!("In file {}", file_path);
 
@@ -38,24 +33,37 @@ impl Reader {
     pub fn get_file_content<'a>(&self) -> &str {
         &(self.file_content)
     }
+}
 
-    pub fn get_row_counter(&self) -> usize {
+impl ReaderGeneral for Reader {
+    fn new(file_path: &str) -> Self {
+        Self {
+            file_content: Self::read_file(file_path),
+            row_counter: 0,
+            column_counter: 0,
+            true_index: 0,
+        }
+    }
+    fn change_file(&mut self, file_path: &str) {
+        self.true_index = 0;
+        self.row_counter = 0;
+        self.column_counter = 0;
+        self.file_content = Reader::read_file(file_path)
+    }
+    fn get_row_counter(&self) -> usize {
         self.row_counter * 1
     }
-    pub fn get_column_counter(&self) -> usize {
+    fn get_column_counter(&self) -> usize {
         self.column_counter * 1
     }
-
-    pub fn peek(&self) -> Result<char, &str> {
+    fn peek(&self) -> Result<char, &str> {
         let true_index = self.get_true_index();
         Ok(char::from(self.file_content.as_bytes()[true_index]))
     }
-
     fn get_true_index(&self) -> usize {
         self.true_index
     }
-
-    pub fn consume(&mut self) -> Result<char, &str> {
+    fn consume(&mut self) -> Result<char, &str> {
         let peek_result = self.peek().expect("Failed in consume");
         if peek_result == '\n' {
             self.row_counter += 1;
@@ -68,16 +76,17 @@ impl Reader {
 
         Ok(peek_result)
     }
-
-    pub fn is_eof(&self) -> bool {
+    fn is_eof(&self) -> bool {
         self.true_index >= self.file_content.len()
     }
 }
 
 
+
+
 #[cfg(test)]
 mod test_reader {
-    use crate::reader::reader::Reader;
+    use crate::reader::reader::{Reader, ReaderGeneral};
 
     const TEST_MATERIAL_DIRECTORY: &str = "src/reader/test_material";
     #[test]
