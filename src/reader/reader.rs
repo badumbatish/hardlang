@@ -47,7 +47,6 @@ impl Reader {
     }
 
     pub fn peek(&self) -> Result<char, &str> {
-        // TODO : Fix this way of calculating the true index into the string in get_true_index
         let true_index = self.get_true_index();
         Ok(char::from(self.file_content.as_bytes()[true_index]))
     }
