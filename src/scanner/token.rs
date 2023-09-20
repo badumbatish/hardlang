@@ -7,6 +7,9 @@ pub enum TOKEN {
     DIV, // /
     MOD, // %
 
+    AddAssign, // +=
+    AddIncr , // ++
+
     AND, // &&
     OR, // ||
     XOR, // ^
