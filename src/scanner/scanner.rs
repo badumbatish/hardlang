@@ -43,4 +43,15 @@ impl Lexer {
 
 }
 
+#[cfg(test)]
+mod test_next_token {
+
+    #[test]
+    fn test_add_family() {
+
+    }
+}
+
+
+
 
