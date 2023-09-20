@@ -1,4 +1,5 @@
 #[derive(Debug)]
+#[derive(PartialEq)]
 pub enum TOKEN {
     // BASIC MATH OPERATION
     ADD, // +
