@@ -18,7 +18,11 @@ impl Lexer {
     pub fn next_token(&self) -> TOKEN {
 
         while !self.reader.is_eof() {
-
+            let peeked = self.reader.peek().unwrap();
+            let token = match peeked {
+                 _ => TOKEN::INVALID
+            };
+g
         }
         return TOKEN::ADD
     }  // Match the read character and assign appropriate type
