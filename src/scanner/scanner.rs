@@ -16,10 +16,10 @@ impl Lexer {
         }
     }
     pub fn next_token(&mut self) -> TOKEN {
-
+        let mut token = TOKEN::INVALID;
         while !self.reader.is_eof() {
             let first_char = self.reader.consume().unwrap();
-            let token = match first_char {
+            token = match first_char {
                 // Starts with '+'
                  '+' => {
                      if !self.reader.is_eof() {
@@ -38,16 +38,29 @@ impl Lexer {
             };
 
         }
-        return TOKEN::ADD
+        return token;
     }  // Match the read character and assign appropriate type
 
 }
 
 #[cfg(test)]
 mod test_next_token {
+    use crate::reader::reader::{Reader, ReaderGeneral};
+    use crate::scanner::scanner::Lexer;
+    use crate::scanner::token::TOKEN;
 
     #[test]
     fn test_add_family() {
+        let mut lxr = Lexer{
+            reader : Reader::new_str("+")
+        };
+
+
+        assert_eq!(lxr.next_token(), TOKEN::ADD);
+        assert_eq!(lxr.next_token(), TOKEN::INVALID);
+
+        lxr.reader = Reader::new_str("+=");
+        assert_eq!(lxr.next_token(), TOKEN::AddAssign);
 
     }
 }
