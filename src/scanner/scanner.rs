@@ -40,7 +40,7 @@ pub enum TOKEN {
     SingleComment, //
     // BlockComment(Vec<char>),
 
-
+    EOF, //
 }
 
 pub struct Lexer {
