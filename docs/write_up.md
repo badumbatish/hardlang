@@ -18,8 +18,10 @@ This is also why I want to seperate the reader from the lexer, so that the lexer
 
 ## Scanner (Lexer)
 The lexer's job is provide a function called **lex** that will output a Token to the parser. It does this by calling
-from the reader's function calls
+from the reader's function calls. This means that the lexer produces 1 token at a time, until EOF.
 
+I want the lexer to be as dumb as possible. It will obey the parser's direction on whether it will keep on scanning or not. The parser will be in charge of 
+halting the parsing process, and consequently the scanner process.
 ## Parser 
 
 TBD
