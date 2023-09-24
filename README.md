@@ -1,7 +1,7 @@
 # hardlang
 
 ## Write-up
-
+See `docs/write_up.md`
 ## Dev
 
 ### Testing
