@@ -18,19 +18,36 @@ impl Lexer {
     }
     pub fn next_token(&mut self) -> TOKEN {
         let mut token = TOKEN::EOF;
-        if !self.reader.is_eof() {
+        while !self.reader.is_eof() {
             let first_char = self.reader.consume().unwrap();
-            token = match first_char {
+            match first_char {
                 // Starts with '+'
-                '+' => self.match_add(),
-                '-' => self.match_sub(),
+                '+' => {
+                    token = self.match_add();
+                    break;
+                }
+                '-' => {
+                    token = self.match_sub();
+                    break;
+                }
 
-                '*' => self.match_mul(),
+                '*' => {
+                    token = self.match_mul();
+                    break;
+                }
 
-                '/' => self.match_div(),
+                '/' => {
+                    token = self.match_div();
+                    break;
+                }
 
-                ' ' => self.next_token(),
-                _ => TOKEN::INVALID,
+                ' ' => {
+                    continue;
+                }
+                _ => {
+                    token = TOKEN::INVALID;
+                    break;
+                }
             };
         }
         return token;
@@ -81,7 +98,6 @@ impl Lexer {
     fn match_div(&mut self) -> TOKEN {
         TOKEN::DIV
     }
-
 }
 
 #[cfg(test)]
@@ -146,7 +162,7 @@ mod test_next_token {
     #[test]
     fn test_whitespace() {
         let mut lxr = Lexer {
-            reader : Reader::new_str(" -"),
+            reader: Reader::new_str(" -"),
         };
 
         assert_eq!(lxr.next_token(), TOKEN::SUB);
