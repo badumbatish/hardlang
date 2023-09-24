@@ -12,6 +12,7 @@ pub enum TOKEN {
     SubAssign, // -=
     SubDecr,   // --
     MulAssign, // *=
+    DivAssign, // /=
 
     AND, // &&
     OR,  // ||
