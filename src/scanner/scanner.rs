@@ -1,5 +1,6 @@
 use crate::reader::reader::{Reader, ReaderGeneral};
 use crate::scanner::token::TOKEN;
+use crate::scanner::token::TOKEN::INVALID;
 
 // In case of multiple readers implementation, please use the next line to set the reader
 // type Reader = Reader
@@ -17,7 +18,7 @@ impl Lexer {
     }
     pub fn next_token(&mut self) -> TOKEN {
         let mut token = TOKEN::INVALID;
-        while !self.reader.is_eof() {
+        if !self.reader.is_eof() {
             let first_char = self.reader.consume().unwrap();
             token = match first_char {
                 // Starts with '+'
@@ -27,6 +28,7 @@ impl Lexer {
                 '*' => self.match_mul(),
 
                 '/' => self.match_div(),
+
                 _ => TOKEN::INVALID,
             };
         }
@@ -60,6 +62,25 @@ impl Lexer {
             TOKEN::SUB
         }
     }
+
+    fn match_mul(&mut self) -> TOKEN {
+        if !self.reader.is_eof() {
+            let second_char = self.reader.consume().unwrap();
+            match second_char {
+                ' ' => TOKEN::MUL,
+                '=' => TOKEN::MulAssign,
+                '*' => TOKEN::EXP,
+                _ => TOKEN::INVALID,
+            }
+        } else {
+            TOKEN::MUL
+        }
+    }
+
+    fn match_div(&mut self) -> TOKEN {
+        TOKEN::DIV
+    }
+
 }
 
 #[cfg(test)]
@@ -83,6 +104,33 @@ mod test_next_token {
 
     #[test]
     fn test_sub_family() {
+        let mut lxr = Lexer {
+            reader: Reader::new_str("-"),
+        };
+
+        assert_eq!(lxr.next_token(), TOKEN::SUB);
+        assert_eq!(lxr.next_token(), TOKEN::INVALID);
+
+        lxr.reader = Reader::new_str("-= ");
+        assert_eq!(lxr.next_token(), TOKEN::SubAssign);
+    }
+    #[test]
+    fn test_mul_family() {
+        let mut lxr = Lexer {
+            reader: Reader::new_str("*"),
+        };
+
+        assert_eq!(lxr.next_token(), TOKEN::MUL);
+        assert_eq!(lxr.next_token(), TOKEN::INVALID);
+
+        lxr.reader = Reader::new_str("*=");
+        assert_eq!(lxr.next_token(), TOKEN::MulAssign);
+
+        lxr.reader = Reader::new_str("**");
+        assert_eq!(lxr.next_token(), TOKEN::EXP);
+    }
+    #[test]
+    fn test_div_family() {
         let mut lxr = Lexer {
             reader: Reader::new_str("-"),
         };
