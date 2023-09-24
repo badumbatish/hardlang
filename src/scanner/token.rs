@@ -1,47 +1,44 @@
-#[derive(Debug)]
-#[derive(PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum TOKEN {
     // BASIC MATH OPERATION
     ADD, // +
-    SUB,  // -
+    SUB, // -
     MUL, // *
     DIV, // /
     MOD, // %
 
     AddAssign, // +=
-    AddIncr , // ++
+    AddIncr,   // ++
     SubAssign, // -=
-    SubDecr, // --
+    SubDecr,   // --
 
     AND, // &&
-    OR, // ||
+    OR,  // ||
     XOR, // ^
     SHL, // <<
     SHR, // >>
 
-    EQUAL,    // ==
-    LESS,   // <
-    GREATER,   // >
-    ASSIGN, // =
-    NOT,   // !
+    EQUAL,   // ==
+    LESS,    // <
+    GREATER, // >
+    ASSIGN,  // =
+    NOT,     // !
 
-
-    AndAssign, // &=
-    OrAssign, // !=
-    XorAssign, // ^=
-    ShlAssign, // <<=
-    ShrAssign, // >>=
+    AndAssign,    // &=
+    OrAssign,     // !=
+    XorAssign,    // ^=
+    ShlAssign,    // <<=
+    ShrAssign,    // >>=
     AndNotAssign, // &^=
 
     // EXP AND FloorDiv
-    EXP, // **
+    EXP,      // **
     FloorDiv, // /_
-    CeilDiv, // /^
+    CeilDiv,  // /^
 
     // COMMENTS
     SingleComment, //
     // BlockComment(Vec<char>),
-
-    EOF, //
+    EOF,     //
     INVALID, //
 }

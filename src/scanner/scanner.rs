@@ -5,14 +5,14 @@ use crate::scanner::token::TOKEN;
 // type Reader = Reader
 
 pub struct Lexer {
-    reader : Reader,
+    reader: Reader,
 }
 
 impl Lexer {
     // Create a new Lexer instance
-    pub fn new(file_path : &str) -> Self {
+    pub fn new(file_path: &str) -> Self {
         Self {
-            reader : Reader::new(file_path)
+            reader: Reader::new(file_path),
         }
     }
     pub fn next_token(&mut self) -> TOKEN {
@@ -21,18 +21,17 @@ impl Lexer {
             let first_char = self.reader.consume().unwrap();
             token = match first_char {
                 // Starts with '+'
-                 '+' => {
-                     self.match_add()
-                 }
-                '-' => {
-                    self.match_sub()
-                }
-                 _ => TOKEN::INVALID
-            };
+                '+' => self.match_add(),
+                '-' => self.match_sub(),
 
+                '*' => self.match_mul(),
+
+                '/' => self.match_div(),
+                _ => TOKEN::INVALID,
+            };
         }
         return token;
-    }  // Match the read character and assign appropriate type
+    } // Match the read character and assign appropriate type
 
     fn match_add(&mut self) -> TOKEN {
         if !self.reader.is_eof() {
@@ -61,8 +60,6 @@ impl Lexer {
             TOKEN::SUB
         }
     }
-
-
 }
 
 #[cfg(test)]
@@ -73,35 +70,27 @@ mod test_next_token {
 
     #[test]
     fn test_add_family() {
-        let mut lxr = Lexer{
-            reader : Reader::new_str("+")
+        let mut lxr = Lexer {
+            reader: Reader::new_str("+"),
         };
-
 
         assert_eq!(lxr.next_token(), TOKEN::ADD);
         assert_eq!(lxr.next_token(), TOKEN::INVALID);
 
         lxr.reader = Reader::new_str("+=");
         assert_eq!(lxr.next_token(), TOKEN::AddAssign);
-
     }
 
     #[test]
     fn test_sub_family() {
-        let mut lxr = Lexer{
-            reader : Reader::new_str("-")
+        let mut lxr = Lexer {
+            reader: Reader::new_str("-"),
         };
-
 
         assert_eq!(lxr.next_token(), TOKEN::SUB);
         assert_eq!(lxr.next_token(), TOKEN::INVALID);
 
         lxr.reader = Reader::new_str("-=");
         assert_eq!(lxr.next_token(), TOKEN::SubAssign);
-
     }
 }
-
-
-
-

@@ -1,6 +1,5 @@
-mod scanner;
 mod parser;
 mod reader;
+mod scanner;
 
-fn main() {
-}
+fn main() {}
