@@ -29,6 +29,7 @@ impl Lexer {
 
                 '/' => self.match_div(),
 
+                ' ' => self.next_token(),
                 _ => TOKEN::INVALID,
             };
         }
@@ -140,5 +141,14 @@ mod test_next_token {
 
         lxr.reader = Reader::new_str("-=");
         assert_eq!(lxr.next_token(), TOKEN::SubAssign);
+    }
+
+    #[test]
+    fn test_whitespace() {
+        let mut lxr = Lexer {
+            reader : Reader::new_str(" -"),
+        };
+
+        assert_eq!(lxr.next_token(), TOKEN::SUB);
     }
 }
