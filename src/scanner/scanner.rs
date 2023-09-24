@@ -17,7 +17,7 @@ impl Lexer {
         }
     }
     pub fn next_token(&mut self) -> TOKEN {
-        let mut token = TOKEN::INVALID;
+        let mut token = TOKEN::EOF;
         if !self.reader.is_eof() {
             let first_char = self.reader.consume().unwrap();
             token = match first_char {
@@ -96,7 +96,7 @@ mod test_next_token {
         };
 
         assert_eq!(lxr.next_token(), TOKEN::ADD);
-        assert_eq!(lxr.next_token(), TOKEN::INVALID);
+        assert_eq!(lxr.next_token(), TOKEN::EOF);
 
         lxr.reader = Reader::new_str("+=");
         assert_eq!(lxr.next_token(), TOKEN::AddAssign);
@@ -109,7 +109,7 @@ mod test_next_token {
         };
 
         assert_eq!(lxr.next_token(), TOKEN::SUB);
-        assert_eq!(lxr.next_token(), TOKEN::INVALID);
+        assert_eq!(lxr.next_token(), TOKEN::EOF);
 
         lxr.reader = Reader::new_str("-= ");
         assert_eq!(lxr.next_token(), TOKEN::SubAssign);
@@ -121,7 +121,7 @@ mod test_next_token {
         };
 
         assert_eq!(lxr.next_token(), TOKEN::MUL);
-        assert_eq!(lxr.next_token(), TOKEN::INVALID);
+        assert_eq!(lxr.next_token(), TOKEN::EOF);
 
         lxr.reader = Reader::new_str("*=");
         assert_eq!(lxr.next_token(), TOKEN::MulAssign);
@@ -136,7 +136,7 @@ mod test_next_token {
         };
 
         assert_eq!(lxr.next_token(), TOKEN::SUB);
-        assert_eq!(lxr.next_token(), TOKEN::INVALID);
+        assert_eq!(lxr.next_token(), TOKEN::EOF);
 
         lxr.reader = Reader::new_str("-=");
         assert_eq!(lxr.next_token(), TOKEN::SubAssign);
