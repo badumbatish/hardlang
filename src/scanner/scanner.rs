@@ -96,7 +96,18 @@ impl Lexer {
     }
 
     fn match_div(&mut self) -> TOKEN {
-        TOKEN::DIV
+        if !self.reader.is_eof() {
+            let second_char = self.reader.consume().unwrap();
+            match second_char {
+                ' ' => TOKEN::DIV,
+                '=' => TOKEN::DivAssign,
+                '/' => TOKEN::FloorDiv,
+                '^' => TOKEN::CeilDiv,
+                _ => TOKEN::INVALID,
+            }
+        } else {
+            TOKEN::DIV
+        }
     }
 }
 
@@ -149,14 +160,16 @@ mod test_next_token {
     #[test]
     fn test_div_family() {
         let mut lxr = Lexer {
-            reader: Reader::new_str("-"),
+            reader: Reader::new_str("/"),
         };
 
-        assert_eq!(lxr.next_token(), TOKEN::SUB);
+        assert_eq!(lxr.next_token(), TOKEN::DIV);
         assert_eq!(lxr.next_token(), TOKEN::EOF);
 
-        lxr.reader = Reader::new_str("-=");
-        assert_eq!(lxr.next_token(), TOKEN::SubAssign);
+        lxr.reader = Reader::new_str("/= // /^");
+        assert_eq!(lxr.next_token(), TOKEN::DivAssign);
+        assert_eq!(lxr.next_token(), TOKEN::FloorDiv);
+        assert_eq!(lxr.next_token(), TOKEN::CeilDiv);
     }
 
     #[test]
