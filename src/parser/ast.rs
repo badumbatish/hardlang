@@ -1,6 +1,6 @@
-use crate::scanner::scanner::TOKEN;
+use crate::scanner::token::TOKEN;
 use std::{cell::RefCell, rc::Rc};
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct AstNode {
     op: TOKEN,
     left: Option<AstNodeRef>,
