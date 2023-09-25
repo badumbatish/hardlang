@@ -9,3 +9,23 @@ pub struct AstNode {
 }
 
 type AstNodeRef = Rc<RefCell<AstNode>>;
+
+pub struct AstTree {
+    root_node : AstNodeRef
+}
+
+#[cfg(test)]
+mod ast_node_test {
+    #[test]
+    fn test_that() {
+        assert!(true);
+    }
+}
+
+#[cfg(test)]
+mod ast_tree_test {
+    #[test]
+    fn test_this() {
+        assert!(true)
+    }
+}
