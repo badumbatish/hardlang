@@ -1,6 +1,5 @@
 use crate::reader::reader::{Reader, ReaderGeneral};
 use crate::scanner::token::TOKEN;
-use crate::scanner::token::TOKEN::INVALID;
 
 // In case of multiple readers implementation, please use the next line to set the reader
 // type Reader = Reader
