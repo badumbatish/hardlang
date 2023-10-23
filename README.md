@@ -1,4 +1,5 @@
 # hardlang
+https://rusty-ferris.pages.dev/blog/binary-tree-sum-of-values/
 
 ## Write-up
 See `docs/write_up.md`
