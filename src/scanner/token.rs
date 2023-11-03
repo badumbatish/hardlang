@@ -1,6 +1,7 @@
 #[derive(Debug, PartialEq)]
 pub enum TOKEN {
     // TODO: Needs to granularize this pile of token into different pieces
+    // TODO: Needs to start assigning types to TOKEN so we can record the value
     // BASIC MATH OPERATION
     ADD, // +
     SUB, // -
