@@ -40,6 +40,12 @@ impl Lexer {
                     break;
                 }
 
+                // If alphabetic, it is an identifier
+                'A'..='Z' | 'a'..='z' => {
+                    token = TOKEN::IDENTIFIER;
+                    break;
+                }
+
                 ' ' => {
                     continue;
                 }

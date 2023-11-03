@@ -1,5 +1,6 @@
 #[derive(Debug, PartialEq)]
 pub enum TOKEN {
+    // TODO: Needs to granularize this pile of token into different pieces
     // BASIC MATH OPERATION
     ADD, // +
     SUB, // -
@@ -43,4 +44,6 @@ pub enum TOKEN {
     // BlockComment(Vec<char>),
     EOF,     //
     INVALID, //
+
+    IDENTIFIER, // Identifier: a, b, c, d, e, f
 }
