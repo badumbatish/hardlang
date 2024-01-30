@@ -7,16 +7,21 @@ use std::{cell::RefCell, rc::Rc};
 
 #[derive(Debug)]
 pub struct AstNode {
-    op: TOKEN,
-    left: Option<AstNodeRef>,
-    right: Option<AstNodeRef>,
-    value: TOKEN,
+    pub op: TOKEN,
+    pub left: Option<AstNodeRef>,
+    pub right: Option<AstNodeRef>,
+    pub value: TOKEN,
 }
 
-type AstNodeRef = Rc<RefCell<AstNode>>;
+
+pub type AstNodeRef = Rc<RefCell<AstNode>>;
 
 pub struct AstTree {
     root_node : AstNodeRef
+}
+
+impl AstTree {
+
 }
 
 #[cfg(test)]
