@@ -124,17 +124,30 @@ impl Lexer {
     fn match_identifier(&mut self) -> TOKEN {
         let mut str : String = "".to_string();
         while !self.reader.is_eof() {
-            let ch = self.reader.peek().unwrap();
-            match ch {
+            let ch_char = self.reader.peek().unwrap();
+            match ch_char {
                 'A'..='Z' | 'a'..='z' => {
                     let _ = self.reader.consume();
-                    str += &*ch.to_string();
+                    str += &*ch_char.to_string();
                 }
-                _ => { break }
+
+                '0'..='9' => {
+                    while !self.reader.is_eof() {
+                        let ch_num = self.reader.peek().unwrap();
+                        match ch_num {
+                            '0'..='9' => {
+                                let _ = self.reader.consume();
+                                str += &*ch_num.to_string();
+                            }
+                            ' ' => { break }
+                            _ => { return TOKEN::INVALID }
+                        }
+                    }
+                    break;
+                }
+                ' ' => { break }
+                _ => { return TOKEN::INVALID }
             }
-        }
-        if str.len() == 0 {
-            return TOKEN::INVALID
         }
         return TOKEN::IDENTIFIER(str.to_string())
     }
@@ -217,5 +230,17 @@ mod test_next_token {
         };
 
         assert_eq!(lxr.next_token(), TOKEN::IDENTIFIER("x".to_string()));
+
+        lxr.reader = Reader::new_str("xxxx");
+        assert_eq!(lxr.next_token(), TOKEN::IDENTIFIER("xxxx".to_string()));
+
+        lxr.reader = Reader::new_str("x2");
+        assert_eq!(lxr.next_token(), TOKEN::IDENTIFIER("x2".to_string()));
+
+        lxr.reader = Reader::new_str("x2x");
+        assert_eq!(lxr.next_token(), TOKEN::INVALID);
+
+        lxr.reader = Reader::new_str("2x");
+        assert_eq!(lxr.next_token(), TOKEN::INVALID);
     }
 }
