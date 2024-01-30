@@ -18,38 +18,44 @@ impl Lexer {
     pub fn next_token(&mut self) -> TOKEN {
         let mut token = TOKEN::EOF;
         while !self.reader.is_eof() {
-            let first_char = self.reader.consume().unwrap();
+            let first_char = self.reader.peek().unwrap();
             match first_char {
                 // Starts with '+'
                 '+' => {
+                    let _ = self.reader.consume();
                     token = self.match_add();
                     break;
                 }
                 '-' => {
+                    let _ = self.reader.consume();
                     token = self.match_sub();
                     break;
                 }
 
                 '*' => {
+                    let _ = self.reader.consume();
                     token = self.match_mul();
                     break;
                 }
 
                 '/' => {
+                    let _ = self.reader.consume();
                     token = self.match_div();
                     break;
                 }
 
                 // If alphabetic, it is an identifier
                 'A'..='Z' | 'a'..='z' => {
-                    token = TOKEN::IDENTIFIER;
+                    token = self.match_identifier();
                     break;
                 }
 
                 ' ' => {
+                    let _ = self.reader.consume();
                     continue;
                 }
                 _ => {
+                    let _ = self.reader.consume();
                     token = TOKEN::INVALID;
                     break;
                 }
@@ -113,6 +119,24 @@ impl Lexer {
         } else {
             TOKEN::DIV
         }
+    }
+
+    fn match_identifier(&mut self) -> TOKEN {
+        let mut str : String = "".to_string();
+        while !self.reader.is_eof() {
+            let ch = self.reader.peek().unwrap();
+            match ch {
+                'A'..='Z' | 'a'..='z' => {
+                    let _ = self.reader.consume();
+                    str += &*ch.to_string();
+                }
+                _ => { break }
+            }
+        }
+        if str.len() == 0 {
+            return TOKEN::INVALID
+        }
+        return TOKEN::IDENTIFIER(str.to_string())
     }
 }
 
@@ -184,5 +208,14 @@ mod test_next_token {
         };
 
         assert_eq!(lxr.next_token(), TOKEN::SUB);
+    }
+
+    #[test]
+    fn test_identifer() {
+        let mut lxr = Lexer {
+            reader: Reader::new_str("x"),
+        };
+
+        assert_eq!(lxr.next_token(), TOKEN::IDENTIFIER("x".to_string()));
     }
 }
