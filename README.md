@@ -1,4 +1,10 @@
 # hardlang
+
+People always say that first times are the hardest.
+
+Hence, hardlang, since it is my first.
+
+
 https://rusty-ferris.pages.dev/blog/binary-tree-sum-of-values/
 
 ## Write-up
