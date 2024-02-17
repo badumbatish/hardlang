@@ -51,7 +51,18 @@ pub enum TOKEN {
 }
 
 #[derive(Debug)]
-struct TokenPair {
+pub struct TokenPair {
     token: TOKEN,
     str : String
+}
+
+impl TokenPair {
+    // Constructor
+    fn new(token: TOKEN, s: &str) -> Self {
+        TokenPair {
+            token,
+            str: String::from(s),
+        }
+    }
+
 }
