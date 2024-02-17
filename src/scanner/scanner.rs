@@ -244,3 +244,12 @@ mod test_next_token {
         assert_eq!(lxr.next_token(), TOKEN::INVALID);
     }
 }
+
+
+#[cfg(test)]
+mod test_multiple_token {
+    #[test]
+    fn test_two_token_basic() {
+
+    }
+}
