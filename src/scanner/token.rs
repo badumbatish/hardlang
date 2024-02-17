@@ -50,19 +50,3 @@ pub enum TOKEN {
     IDENTIFIER(String), // Identifier: a, b, c, d, e, f
 }
 
-#[derive(Debug)]
-pub struct TokenPair {
-    token: TOKEN,
-    str : String
-}
-
-impl TokenPair {
-    // Constructor
-    fn new(token: TOKEN, s: &str) -> Self {
-        TokenPair {
-            token,
-            str: String::from(s),
-        }
-    }
-
-}
