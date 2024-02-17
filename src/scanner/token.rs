@@ -49,3 +49,9 @@ pub enum TOKEN {
     NUM(f64), // Number : always floating point 64 bit
     IDENTIFIER(String), // Identifier: a, b, c, d, e, f
 }
+
+#[derive(Debug)]
+struct TokenPair {
+    token: TOKEN,
+    str : String
+}
