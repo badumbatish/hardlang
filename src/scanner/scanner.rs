@@ -151,7 +151,7 @@ impl Lexer {
                 _ => { return TOKEN::INVALID }
             }
         }
-        return TOKEN::IDENTIFIER(str)
+        return TOKEN::NUM(str)
     }
     fn match_identifier(&mut self) -> TOKEN {
         let mut str : String = "".to_string();
