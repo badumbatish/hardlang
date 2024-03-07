@@ -257,7 +257,11 @@ mod test_next_token {
 
     #[test]
     fn test_num() {
+        let mut lxr = Lexer {
+            reader: Reader::new_str("00"),
+        };
 
+        assert_eq!(lxr.next_token(), TOKEN::NUM("00".to_string()));
     }
     #[test]
     fn test_identifer() {
