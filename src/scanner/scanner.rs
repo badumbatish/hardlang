@@ -50,6 +50,10 @@ impl Lexer {
                     break;
                 }
 
+                '0'..='9' => {
+                    token = self.match_num();
+                    break;
+                }
                 ' ' => {
                     let _ = self.reader.consume();
                     continue;
@@ -120,7 +124,21 @@ impl Lexer {
             TOKEN::DIV
         }
     }
-
+    fn match_num(&mut self) -> TOKEN {
+        let mut str : String = "".to_string();
+        while !self.reader.is_eof() {
+            let ch_char = self.reader.peek().unwrap();
+            match ch_char {
+                '0'..='9' => {
+                    str.push(ch_char);
+                    break;
+                }
+                ' ' => { break }
+                _ => { return TOKEN::INVALID }
+            }
+        }
+        return TOKEN::IDENTIFIER(str)
+    }
     fn match_identifier(&mut self) -> TOKEN {
         let mut str : String = "".to_string();
         while !self.reader.is_eof() {
