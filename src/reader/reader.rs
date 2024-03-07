@@ -6,9 +6,12 @@ pub trait ReaderGeneral {
     fn change_file(&mut self, file_path: &str);
     fn get_row_counter(&self) -> usize;
     fn get_column_counter(&self) -> usize;
-    fn peek(&self) -> Result<char, &str>;
+    fn peek(&self) -> Result<char, String>;
+    // Peek the n-th token from current position
+    // If we cannot peek that far, return
+    fn peek_n(&self, n : usize) -> Result<char, String>;
     fn get_true_index(&self) -> usize;
-    fn consume(&mut self) -> Result<char, &str>;
+    fn consume(&mut self) -> Result<char, String>;
     fn is_eof(&self) -> bool;
 }
 
@@ -64,14 +67,26 @@ impl ReaderGeneral for Reader {
     fn get_column_counter(&self) -> usize {
         self.column_counter * 1
     }
-    fn peek(&self) -> Result<char, &str> {
+    fn peek(&self) -> Result<char, String> {
         let true_index = self.get_true_index();
         Ok(char::from(self.file_content.as_bytes()[true_index]))
+    }
+
+    // Peek the n-th token from current position
+    // If we cannot peek that far, return
+    fn peek_n(&self, n : usize) -> Result<char, String> {
+        let true_index = self.get_true_index() + n;
+
+        if (self.file_content.len() < true_index) {
+            Err(format!("Failed to peek to {}", n))
+        } else {
+            Ok(char::from(self.file_content.as_bytes()[true_index]))
+        }
     }
     fn get_true_index(&self) -> usize {
         self.true_index
     }
-    fn consume(&mut self) -> Result<char, &str> {
+    fn consume(&mut self) -> Result<char, String> {
         let peek_result = self.peek().expect("Failed in consume");
         if peek_result == '\n' {
             self.row_counter += 1;
