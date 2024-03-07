@@ -6,12 +6,12 @@ mod reader;
 mod scanner;
 
 fn main() {
-    let a = TOKEN::NUM(64.0);
+    let _a = TOKEN::NUM("0.0".to_string());
 
     let b : TOKEN = TOKEN::ADD;
     let c : Option<AstNodeRef> = None;
     let d : Option<AstNodeRef> = None;
-    let e : TOKEN = TOKEN::NUM(0.0);
+    let e : TOKEN = TOKEN::NUM("0.0".to_string());
 
-    let ast : AstNode = AstNode { op: b, left: c, right: d, value: e };
+    let _ast : AstNode = AstNode { op: b, left: c, right: d, value: e };
 }

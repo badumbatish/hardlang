@@ -46,7 +46,7 @@ pub enum TOKEN {
     EOF,     //
     INVALID, //
 
-    NUM(f64), // Number : always floating point 64 bit
+    NUM(String), // Number : always floating point 64 bit
     IDENTIFIER(String), // Identifier: a, b, c, d, e, f
 }
 
