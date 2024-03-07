@@ -130,7 +130,21 @@ impl Lexer {
             let ch_char = self.reader.peek().unwrap();
             match ch_char {
                 '0'..='9' => {
+                    let _ = self.reader.consume();
                     str.push(ch_char);
+                }
+                '.' => {
+                    while !self.reader.is_eof() {
+                        let after_ch = self.reader.peek().unwrap();
+                        match after_ch {
+                            '0'..='9' => {
+                                let _ = self.reader.consume();
+                                str.push(after_ch);
+                            }
+                            ' ' => { break }
+                            _ => { return TOKEN::INVALID }
+                        }
+                    }
                     break;
                 }
                 ' ' => { break }
@@ -241,6 +255,10 @@ mod test_next_token {
         assert_eq!(lxr.next_token(), TOKEN::SUB);
     }
 
+    #[test]
+    fn test_num() {
+
+    }
     #[test]
     fn test_identifer() {
         let mut lxr = Lexer {
