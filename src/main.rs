@@ -1,7 +1,7 @@
 pub mod lexer;
-use crate::lexer::lexer::p;
+use lexer::lexer as Lexer;
 
 fn main() {
-    lexer::p();
+    Lexer::Lexer::print_hi();
     println!("Hello, world!");
 }
